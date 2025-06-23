@@ -1,12 +1,6 @@
 import streamlit as st
 import requests
-from dotenv import load_dotenv
-import os
-load_dotenv()
 
-
-
-server_url = os.getenv("SERVER_URL")
 
 st.title("Chat App with FastAPI Backend")
 
