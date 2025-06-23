@@ -14,6 +14,7 @@ class GPTUtils:
             text_format=response_model, 
             temperature=temperature,
         )
+        print(response.output_parsed)
         return response.output_parsed
     
     @staticmethod
@@ -23,6 +24,7 @@ class GPTUtils:
             messages=messages,
             temperature=temperature,
         )
+        print(response.choices[0].message.content)
         return response.choices[0].message.content
  
     @staticmethod

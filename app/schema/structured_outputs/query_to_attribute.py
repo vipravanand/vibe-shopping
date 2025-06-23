@@ -26,7 +26,7 @@ length_options = Literal['Mini', 'Short', 'Midi', 'Maxi']
 
 pant_type_options = Literal['Wide-legged', 'Ankle length', 'Flared', 'Wide hem', 'Straight ankle', 'Mid-rise', 'Low-rise']
 
-size_options = Literal['XS,S,M,L,XL']
+size_options = Literal['XS', 'S', 'M', 'L', 'XL']
 
 category_options = Literal['top', 'dress', 'skirt', ' pants']
 
@@ -54,26 +54,35 @@ class Reasoning(BaseModel):
 
 class QueryToAttribute(BaseModel):
 
-    vibe: Optional[List[str]] = Field(description="The vibe expressed by the shopper in the query", default=None)
+    vibe: Optional[List[str]] = Field(description="The vibe expressed by the shopper in the query", default=[])
 
-    name: Optional[List[str]] = Field(description="The name of the item of clothing", default=None)
+    category: Optional[List[category_options]] = Field(description="The category of the item of clothing", default=[])
 
-    category: Optional[List[category_options]] = Field(description="The category of the item of clothing", default=None)
+    size: Optional[List[size_options]] = Field(description="The size of the item of clothing", default=[])
+    fit: Optional[List[fit_options]] = Field(description="The fit of the item of clothing", default=[])
+    fabric: Optional[List[fabric_options]] = Field(description="The fabric of the item of clothing", default=[])      
+    sleeve_length: Optional[List[sleeve_length_options]] = Field(description="The sleeve length of the item of clothing", default=[])
 
-    size: Optional[List[size_options]] = Field(description="The size of the item of clothing", default=None)
-    fit: Optional[List[fit_options]] = Field(description="The fit of the item of clothing", default=None)
-    fabric: Optional[List[fabric_options]] = Field(description="The fabric of the item of clothing", default=None)      
-    sleeve_length: Optional[List[sleeve_length_options]] = Field(description="The sleeve length of the item of clothing", default=None)
+    colour_or_print: Optional[List[color_or_print_options]] = Field(description="The colour or print of the item of clothing", default=[])
 
-    colour_or_print: Optional[List[color_or_print_options]] = Field(description="The colour or print of the item of clothing", default=None)
+    occasion: Optional[List[occasion_options]] = Field(description="The occasion of the item of clothing", default=[])
 
-    occasion: Optional[List[occasion_options]] = Field(description="The occasion of the item of clothing", default=None)
+    neckline: Optional[List[neckline_options]] = Field(description="The neckline of the item of clothing", default=[])
+    length: Optional[List[length_options]] = Field(description="The length of the item of clothing", default=[])
+    pant_type: Optional[List[pant_type_options]] = Field(description="The pant type of the item of clothing", default=[])
 
-    neckline: Optional[List[neckline_options]] = Field(description="The neckline of the item of clothing", default=None)
-    length: Optional[List[length_options]] = Field(description="The length of the item of clothing", default=None)
-    pant_type: Optional[List[pant_type_options]] = Field(description="The pant type of the item of clothing", default=None)
-
-    price: Optional[Price] = Field(description="The price of the item of clothing", default=None)
+    price: Optional[Price] = Field(description="The price of the item of clothing", default=Price(min=None, max=None))
 
     # reasoning: Optional[Reasoning] = Field(description="The reasoning for the attribute mapping", default=None)
 
+class VibeToAttribute(BaseModel):
+
+    fit: Optional[List[fit_options]] = Field(description="The fit of the item of clothing implied from the vibe", default=[])
+
+    fabric: Optional[List[fabric_options]] = Field(description="The fabric of the item of clothing implied from the vibe", default=[])      
+
+    colour_or_print: Optional[List[color_or_print_options]] = Field(description="The colour or print of the item of clothing implied from the vibe", default=[])
+
+    occasion: Optional[List[occasion_options]] = Field(description="The occasion of the item of clothing implied from the vibe", default=[])
+
+    reasoning: Optional[str] = Field(description="The reasoning for the attribute mapping", default="")

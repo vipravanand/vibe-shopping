@@ -3,7 +3,7 @@ from app.schema.requests.chat import ChatRequest
 from prompts.prompt_manager import PromptManager
 from utils.gpt_utils import GPTUtils
 from pydantic import BaseModel, Field
-from app.tools.agents import ApparelSearchAgent, Agent
+from app.agents.agents import ApparelSearchAgent, Agent
 from app.database.in_memory_db import InMemoryDB
 
 
