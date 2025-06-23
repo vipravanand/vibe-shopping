@@ -8,7 +8,6 @@ from app.database.in_memory_db import InMemoryDB
 
 
 master_agents_list = [ApparelSearchAgent]
-agents_options = Literal["apparel-search-agent"]
 
 
 
@@ -20,14 +19,14 @@ class SubQuery(BaseModel):
     The reasoning is used to explain 
     """
     query: str 
-    agents: agents_options
+    agents: Literal["apparel-search-agent"]
     reasoning: str
 
 
 class Router(BaseModel):
     """
     Router is to be decomposed into a list of synonyms of the key words, the vibe, and the attributes for the search.
-    The reasoning is used to explain 
+    The reasoning is used to explain    
     """
     sub_queries: Optional[List[SubQuery]] = Field(default=None)
 
