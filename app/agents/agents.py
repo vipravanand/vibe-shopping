@@ -276,10 +276,10 @@ class ApparelSearchAgent(Agent):
     def filter_by_price(self, df: pd.DataFrame, filters: Dict[str, Any]) -> pd.DataFrame:
         if filters["price"] is None:
             return df
-        if filters["price"]["min"] is None and filters["price"].max is None:
-            return df
-        if filters["price"].min is not None and filters["price"].max is not None:
-            return df[df["price"] >= filters["price"].min and df["price"] <= filters["price"].max]
+        if filters["price"]["min"] is None and filters["price"]["max"] is None:
+            return df   
+        if filters["price"]["min"] is not None and filters["price"]["max"] is not None:
+            return df[(df["price"] >= filters["price"]["min"]) & (df["price"] <= filters["price"]["max"])]
         
         if filters["price"]["min"] is not None and filters["price"]["max"] is None:
             return df[df["price"] >= filters["price"]["min"]]
@@ -297,10 +297,11 @@ class ApparelSearchAgent(Agent):
 
         df["match_count"] = df.apply(lambda row: self.count_matches(row, filters), axis=1)
         df = df.sort_values(by="match_count", ascending=False)
-        top_3_matches = "Mention that these are some items that match your requirements: " + df_price.head(2).to_string(index=False) + "Mention the reasons why this is a good match as per the attributes infeerred and vibes mentioned in the query."
+        top_3_matches = "Mention that these are some items that match your requirements: " + df.head(2).to_string(index=False) + "Mention the reasons why this is a good match as per the attributes infeerred and vibes mentioned in the query."
         df_price = self.filter_by_price(df.copy(), filters)
         if len(df_price) == 0 and len(df) > 0:
-            self.response = "Mention to the user: that While no items match the user's price range, here are some items that match your requirements: " + df.head(2).to_string(index=False) + "Mention the reasons why this is a good match as per the attributes infeerred and vibes mentioned in the query."
+            self.response = "Mention to the user: that While no items match the user's price range, here are some items that match your requirements: " + \
+                            df.head(2).to_string(index=False) + "Mention the reasons why this is a good match as per the attributes infeerred and vibes mentioned in the query."
         elif len(df_price) > 0: 
             self.response = "Mentio to the user : Here are some items that match your requirements: " + df_price.head(2).to_string(index=False) + "Mention the reasons why this is a good match as per the attributes infeerred and vibes mentioned in the query."
 
@@ -317,7 +318,6 @@ class ApparelSearchAgent(Agent):
         
     def product_engine(self) -> str:
         self.extract_vibe_and_attributes()
-        self.missing_data = self.get_missing_data()
         self.recommend()
 
     def inform_engine(self) -> str:
