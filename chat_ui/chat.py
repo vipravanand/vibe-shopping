@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import uuid
-import os
 
 
 st.title("Chat App with FastAPI Backend")
@@ -19,7 +18,7 @@ if st.button("Clear Chat"):
     st.rerun()
 
 # Display current session ID
-st.sidebar.markdown(f"**Session ID:** {st.session_state.session_id[:8]}...")
+# st.sidebar.markdown(f"**Session ID:** {st.session_state.session_id[:8]}...")
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -33,7 +32,7 @@ if prompt := st.chat_input("Type your message"):
     with st.chat_message("assistant"):
         # Call FastAPI backend
         response = requests.post(
-            f"{os.getenv('SERVER_URL')}/chat",
+            f"{st.secrets['SERVER_URL']}/chat",
             json={
                 "message": prompt,
                 "session_id": st.session_state.session_id
