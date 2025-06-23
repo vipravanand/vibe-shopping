@@ -18,9 +18,6 @@ async def root():
 @app.on_event("startup")
 async def startup_event():
     print("Starting up...")
-    db = InMemoryDB()
-    db.db.drop_tables()
-    print("Deleted in memory instance")
 
 
 
