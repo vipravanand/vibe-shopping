@@ -10,6 +10,11 @@ app.root_path = "/api"
 app.include_router(chat.router)
 
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
 @app.on_event("startup")
 async def startup_event():
     print("Starting up...")
